@@ -61,11 +61,13 @@ const Home = () => {
 
 const EntriesForm = () => {
   const apiUtil = api.useContext();
-
   const [message, setMessage] = useState("");
+
   const { mutateAsync } = api.guestbook.postMessage.useMutation({
     onMutate: async (newEntry) => {
       await apiUtil.guestbook.getAll.cancel();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       apiUtil.guestbook.getAll.setData(undefined, (prevEntries) => {
         if (prevEntries) {
           return [...prevEntries, newEntry];
