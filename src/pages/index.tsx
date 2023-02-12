@@ -117,15 +117,30 @@ const EntriesForm = () => {
 
 const GuestbookEntries = () => {
   const { data: guestbookEntries, isLoading } = api.guestbook.getAll.useQuery();
+  const { mutate } = api.guestbook.deleteMessage.useMutation();
 
   if (isLoading) return <>Fetching messages..</>;
+
+  function handleClick(id: string) {
+    mutate({
+      id,
+    });
+    console.log("click");
+  }
 
   return (
     <div className="flex flex-col gap-4">
       {guestbookEntries?.map((entry, index) => (
         <div key={index}>
-          <p>{entry.message}</p>
-          <span> {entry.name} </span>
+          <p>{entry?.message}</p>
+          <span> {entry?.name} </span>
+          <p>Created at: {entry?.createdAt?.toLocaleDateString()}</p>
+          <button
+            onClick={() => handleClick(entry.id)}
+            className="text-red-500"
+          >
+            Delete
+          </button>
         </div>
       ))}
     </div>

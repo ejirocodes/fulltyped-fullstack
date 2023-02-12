@@ -16,8 +16,8 @@ datasource db {
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
+    id                String  @id @default(uuid()) @db.Uuid
+    userId            String  @db.Uuid
     type              String
     provider          String
     providerAccountId String
@@ -34,22 +34,22 @@ model Account {
 }
 
 model GuessBook {
-    id        String   @id @default(cuid())
+    id        String   @id @default(uuid()) @db.Uuid
     createdAt DateTime @default(now())
     name      String
     message   String   @db.VarChar(200)
 }
 
 model Session {
-    id           String   @id @default(cuid())
+    id           String   @id @default(uuid()) @db.Uuid
     sessionToken String   @unique
-    userId       String
+    userId       String   @db.Uuid
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String    @id @default(uuid()) @db.Uuid
     name          String?
     email         String?   @unique
     emailVerified DateTime?
